@@ -1,5 +1,7 @@
 import { parseSQL, ParsedInsert } from './core/parser';
 import { generateLaravelSeeder } from './adapters/laravel';
+// import { generateDjangoSeeder } from './adapters/django';
+import { generatePrismaSeeder } from './adapters/prisma';
 import fs from 'fs';
 
 export interface ConvertOptions {
@@ -16,10 +18,18 @@ export function convertSQLToSeeder(sqlContent: string, options: ConvertOptions):
 
     switch (options.framework) {
         case 'laravel':
+            if (options.outputPath && !options.outputPath.endsWith('.php')) {
+                throw new Error('Output file must have a .php extension');
+            }
             return generateLaravelSeeder(parsedInserts, options.className);
-        // Future implementations
         case 'django':
+            // return generateDjangoSeeder(parsedInserts, options.className);
         case 'prisma':
+            if (options.outputPath && (!options.outputPath.endsWith('.js') || !options.outputPath.endsWith('.ts'))) {
+                throw new Error('Output file must have a .js or .ts extension');
+            }
+            return generatePrismaSeeder(parsedInserts, options.className);
+
         default:
             throw new Error(`Framework ${options.framework} not yet supported`);
     }

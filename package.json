@@ -2,6 +2,9 @@
   "name": "sql-to-seeder",
   "version": "1.0.0",
   "main": "index.js",
+  "bin": {
+    "sql-to-seeder": "./dist/cli.js"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/cli.js",

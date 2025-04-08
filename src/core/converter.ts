@@ -28,7 +28,6 @@ export function convertToNormalizedData(
           return;
         }
         
-        // Here you could add type conversions based on options
         record[column] = value;
       });
       
