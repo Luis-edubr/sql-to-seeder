@@ -23,7 +23,7 @@ export function convertSQLToSeeder(sqlContent: string, options: ConvertOptions):
             }
             return generateLaravelSeeder(parsedInserts, options.className);
         case 'django':
-            // return generateDjangoSeeder(parsedInserts, options.className);
+        // return generateDjangoSeeder(parsedInserts, options.className);
         case 'prisma':
             if (options.outputPath && (!options.outputPath.endsWith('.js') || !options.outputPath.endsWith('.ts'))) {
                 throw new Error('Output file must have a .js or .ts extension');

@@ -15,44 +15,44 @@ async function main() {`;
     // Converter o nome da tabela para o formato camelCase usado pelo Prisma
     // Ex: 'user_profiles' -> 'userProfile'
     const modelName = toPrismaModelName(insert.table);
-    
+
     output += `\n  // Seed data for ${insert.table}\n`;
-    
+
     // Se tivermos múltiplos registros, usamos createMany
     if (insert.values.length > 1) {
       output += `  await prisma.${modelName}.createMany({\n`;
       output += `    data: [\n`;
-      
+
       // Processar cada linha de dados
       for (const row of insert.values) {
         output += `      {\n`;
-        
+
         // Mapear colunas para valores
         for (let i = 0; i < insert.columns.length; i++) {
           const column = toCamelCase(insert.columns[i]);
           const value = formatPrismaValue(row[i]);
           output += `        ${column}: ${value},\n`;
         }
-        
+
         output += `      },\n`;
       }
-      
+
       output += `    ],\n`;
       output += `    skipDuplicates: true,\n`;
       output += `  });\n`;
-    } 
+    }
     // Se tivermos apenas um registro, usamos create
     else if (insert.values.length === 1) {
       output += `  await prisma.${modelName}.create({\n`;
       output += `    data: {\n`;
-      
+
       // Mapear colunas para valores do único registro
       for (let i = 0; i < insert.columns.length; i++) {
         const column = toCamelCase(insert.columns[i]);
         const value = formatPrismaValue(insert.values[0][i]);
         output += `      ${column}: ${value},\n`;
       }
-      
+
       output += `    },\n`;
       output += `  });\n`;
     }
@@ -114,7 +114,7 @@ function toPrismaModelName(tableName: string): string {
   if (tableName.endsWith('s') && !tableName.endsWith('ss')) {
     singular = tableName.slice(0, -1);
   }
-  
+
   // Converte para camelCase
   return toCamelCase(singular);
 }
